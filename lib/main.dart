@@ -30,6 +30,11 @@ class HomePage extends StatelessWidget {
       date: DateTime.now(),
     ),
   ];
+
+  final titleController = TextEditingController();
+  final idController = TextEditingController();
+  final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +62,36 @@ class HomePage extends StatelessWidget {
             ),
             elevation: 7,
           ),
+          Card(
+            elevation: 9,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 5.0,
+                horizontal: 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      'Add Task',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  buildTextField('Title', titleController),
+                  buildTextField('Id', idController),
+                  buildTextField('Amount', amountController),
+                  FlatButton(
+                    child: Text('Submit'),
+                    onPressed: () {},
+                    color: Colors.blueAccent,
+                  ),
+                ],
+              ),
+            ),
+          ),
           Column(
             children: transaction.map((tx) {
               return Card(
@@ -68,7 +103,8 @@ class HomePage extends StatelessWidget {
                       buildRowData('Amount:', '\$ ${tx.amount}'),
                       buildRowData('Id:', tx.id.toString()),
                       buildRowData('Title:', tx.title.toString()),
-                      buildRowData('Date:', DateFormat('dd/MM/yyyy').format(tx.date)),
+                      buildRowData(
+                          'Date:', DateFormat('dd/MM/yyyy').format(tx.date)),
                     ],
                   ),
                 ),
@@ -79,6 +115,11 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildTextField(String input, dynamic data) => TextField(
+        decoration: InputDecoration(labelText: input),
+        controller: data,
+      );
 
   Widget buildRowData(String x, String y) {
     return Padding(
