@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutterLearning/cardsList.dart';
+import 'package:flutterLearning/authScreen.dart';
+import 'package:flutterLearning/readCard.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -21,11 +26,24 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[900],
         title: Text(
-          'WorkTrolly',
+          'Tasks',
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: CardsList(),
+      body: Column(
+        children: [
+          Expanded(child: CardsList()),
+          Expanded(child: ReadData()),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.person),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+            return AuthScreen();
+          }));
+        },
+      ),
     );
   }
 }
